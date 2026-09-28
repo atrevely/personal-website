@@ -6,6 +6,12 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "8000", "--bind", "127.0.0.1", "--directory", "site"],
       "port": 8000
+    },
+    {
+      "name": "site-csp",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["scripts/serve_with_headers.py", "site", "8001"],
+      "port": 8001
     }
   ]
 }
