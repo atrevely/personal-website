@@ -1,8 +1,12 @@
-node_modules/
-build/
-dist/
-coverage/
 .DS_Store
+Thumbs.db
 *.log
 .env*
-!.env.example
+
+# Never let Terraform artifacts near this repo; site/ is synced to a public bucket.
+*.tf
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraform/
+.terraform.lock.hcl

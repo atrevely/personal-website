@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alexander J. Trevelyan, PhD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f8f8f6;
+            --ink: #111111;
+            --muted: #666660;
+            --accent: #2a6ef5;
+            --accent2: #e8380d;
+            --border: #e0e0d8;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+        /* ── HEADER ── */
+        header {
+            position: relative;
+            z-index: 2;
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 5rem 2rem 3rem;
+        }
+
+        .header-content {
+            position: relative;
+        }
+
+        /* ── TAB NAV ── */
+        .hero-nav {
+            position: relative;
+            z-index: 3;
+            pointer-events: all;
+            width: 100%;
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 0 2rem 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 0.6rem;
+            border-top: 2px solid var(--ink);
+            padding-top: 1.2rem;
+            padding-bottom: 0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            text-align: center;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--ink);
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid var(--border);
+            border-radius: 5px;
+            padding: 0.65rem 1rem;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+        }
+
+            .tab-btn:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+                background: rgba(42,110,245,0.04);
+            }
+
+            .tab-btn.active {
+                border-color: var(--accent);
+                color: var(--accent);
+                background: rgba(255, 255, 255, 0.3);
+            }
+
+            .tab-btn.highlight {
+                background: rgba(255, 50, 55, 0.5);
+                border-color: var(--border);
+                color: var(--ink);
+            }
+
+                .tab-btn.highlight:hover {
+                    background: rgba(255, 100, 100, 0.7);
+                    border-color: #c42d0a;
+                }
+
+                .tab-btn.highlight.active {
+                    background: rgba(255, 100, 100, 0.8);
+                    border-color: #c42d0a;
+                }
+
+        /* ── BANNER ── */
+        /* hero-section: natural photo height, buttons pinned to bottom */
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+            margin-top: -18.4vw;
+            pointer-events: none;
+        }
+
+        /* Photo at natural aspect ratio — no stretching */
+        .banner-wrap {
+            position: relative;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .banner-img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Top fade: covers only top 25% of photo */
+        .banner-wrap::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 25%;
+            background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 20%, transparent 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Bottom fade: covers only bottom 60% of photo */
+        .banner-wrap::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(to top, var(--bg) 0%, var(--bg) 20%, transparent 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Side fades */
+        .banner-fade-sides {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: linear-gradient(to right, var(--bg) 0%, transparent 12%), linear-gradient(to left, var(--bg) 0%, transparent 12%);
+        }
+
+        /* Buttons overlap bottom of photo */
+        .hero-nav {
+            position: relative;
+            z-index: 2;
+            max-width: 760px;
+            margin: -25.4vw auto 0;
+            padding: 0 2rem 2rem;
+        }
+
+        /* ── MAIN / PANELS ── */
+        main {
+            position: relative;
+            z-index: 2;
+        }
+
+        main {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 0 2rem 6rem;
+        }
+
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+
+            .tab-panel.active {
+                display: block;
+            }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── SECTION ── */
+        .section {
+            padding-top: 3.5rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+            .section:last-child {
+                border-bottom: none;
+            }
+
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--ink);
+            margin-bottom: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+            .section-title::after {
+                content: '';
+                flex: 1;
+                height: 1px;
+                background: var(--border);
+            }
+
+        /* ── CARDS ── */
+        .cards {
+            display: grid;
+            gap: 3px;
+            background: var(--border);
+            border: 1px solid var(--border);
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 1.5rem 1.6rem;
+            transition: background 0.15s;
+        }
+
+            .card:hover {
+                background: #fafafa;
+            }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 0.35rem;
+            flex-wrap: wrap;
+        }
+
+        .card-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--ink);
+        }
+
+        .card-company {
+            font-size: 1.1rem;
+            font-weight: 100;
+            margin-bottom: 0rem;
+            color: var(--ink);
+        }
+
+        .card-company-status {
+            font-size: 0.9rem;
+            font-weight: 100;
+            color: var(--ink);
+        }
+
+        .card-meta {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--accent);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: var(--muted);
+            line-height: 1.65;
+            margin-top: 0.7rem;
+            margin-bottom: 0.7rem;
+        }
+
+        .card-link {
+            font-size: 0.82rem;
+            color: var(--accent2);
+        }
+
+            .card-link:hover {
+                text-decoration: underline;
+            }
+
+        /* ── RESEARCH EXPLAINER ── */
+        .explainer {
+            padding-top: 3.5rem;
+        }
+
+        .explainer-block {
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+            .explainer-block:last-child {
+                border-bottom: none;
+            }
+
+        .explainer-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.6rem;
+        }
+
+        .explainer-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--ink);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .explainer-body {
+            font-size: 1rem;
+            color: var(--ink);
+            line-height: 1.8;
+            max-width: 620px;
+        }
+
+            .explainer-body p + p {
+                margin-top: 0.9rem;
+            }
+
+        .explainer-link {
+            display: inline-block;
+            margin-top: 1rem;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--accent2);
+        }
+
+        /* ── CONTACT PANEL ── */
+        .contact-panel {
+            padding-top: 3.5rem;
+            max-width: 520px;
+        }
+
+            .contact-panel p {
+                font-size: 1.05rem;
+                line-height: 1.75;
+                color: var(--ink);
+                margin-bottom: 2rem;
+            }
+
+        .contact-links {
+            display: grid;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+        }
+
+        .contact-link-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 1rem 1.4rem;
+            transition: background 0.15s;
+            text-decoration: none;
+            color: var(--ink);
+        }
+
+            .contact-link-row:hover {
+                background: #fafafa;
+                text-decoration: none;
+            }
+
+        .contact-link-label {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .contact-link-value {
+            font-size: 0.88rem;
+            color: var(--accent);
+        }
+
+        /* ── PROJECTS ── */
+        .project-intro {
+            font-size: 1.05rem;
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .project-card h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 0.6rem;
+        }
+
+        .project-card .project-subtitle {
+            font-size: 0.88rem;
+            color: var(--muted);
+            margin-bottom: 1.4rem;
+        }
+
+        .project-card p {
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .project-card p:last-of-type {
+            margin-bottom: 1.4rem;
+        }
+
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            margin: 1.6rem 0;
+        }
+
+        .compare-table th {
+            text-align: left;
+            font-weight: 500;
+            padding: 0.6rem 0.8rem;
+            border-bottom: 2px solid var(--ink);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .compare-table td {
+            padding: 0.55rem 0.8rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        .compare-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.2rem;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--accent);
+            border: 1.5px solid var(--accent);
+            border-radius: 5px;
+            padding: 0.5rem 1rem;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .project-link:hover {
+            background: var(--accent);
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+            font-size: 0.82rem;
+            color: var(--muted);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        /* ── RESPONSIVE ── */
+        /* ── HEADER LAYOUT ── */
+        .header-inner {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        .header-photo {
+            flex-shrink: 0;
+            width: 170px;
+            height: 230px;
+            border-radius: 15px;
+            object-fit: cover;
+            object-position: center top;
+            border: 2px solid var(--border);
+        }
+
+        @media (max-width: 520px) {
+            header, main, footer {
+                padding-left: 1.2rem;
+                padding-right: 1.2rem;
+            }
+
+            .header-inner {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .header-photo {
+                width: 80px;
+                height: 100px;
+            }
+
+            .tab-btn {
+                font-size: 0.75rem;
+                padding: 0.55rem 0.5rem;
+            }
+
+            .tab-nav {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* ── RESEARCH SCROLLYTELLING ── */
+        .scroll-story {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+            padding-top: 3rem;
+        }
+
+        /* Sticky graphic panel */
+        .story-sticky {
+            position: sticky;
+            top: 3rem;
+        }
+
+        .story-graphic-wrap {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--border);
+        }
+
+        .story-img {
+            display: block;
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            transition: opacity 0.4s ease;
+        }
+
+            .story-img.swapping {
+                opacity: 0;
+            }
+
+        .story-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.6rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink);
+            background: rgba(248,248,246,0.85);
+            border-top: 1px solid var(--border);
+            transition: opacity 0.3s ease;
+        }
+
+        /* Scrolling steps */
+        .story-steps {
+            padding-bottom: 6rem;
+        }
+
+        .story-step {
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border);
+            opacity: 0.35;
+            transition: opacity 0.4s ease;
+        }
+
+            .story-step:first-child {
+                padding-top: 0;
+            }
+
+            .story-step.active {
+                opacity: 1;
+            }
+
+        .research-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.6rem;
+        }
+
+        .research-heading {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--ink);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .research-body {
+            font-size: 1rem;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .research-pubs {
+            padding-top: 3.5rem;
+        }
+
+        @media (max-width: 640px) {
+            .scroll-story {
+                grid-template-columns: 1fr;
+            }
+
+            .story-sticky {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        .research-block[data-dir="right"] {
+            direction: ltr;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-inner">
+            <img class="header-photo" src="me_alaska.png" alt="Alexander J. Trevelyan" />
+            <div class="header-text">
+                <h1>Alexander J. Trevelyan, PhD</h1>
+                <p class="subtitle" style="font-size: 20px; font-weight: 450;">Software Engineer | Oakland, CA</p>
+                <p class="bio">
+                    Experience at the cutting edge of (gen/prote/morphol)-omics, building software tools from the command line to the cloud. Fast learner, eager collaboarator, passionate about biotech.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero-section">
+        <div class="banner-wrap">
+            <img class="banner-img" src="banner.jpg" alt="Coastal landscape" />
+            <div class="banner-fade-sides"></div>
+        </div>
+    </div>
+
+    <div class="hero-nav">
+        <div class="tab-nav">
+            <button class="tab-btn active" data-tab="experience">Professional Experience</button>
+            <button class="tab-btn" data-tab="research">Graduate Research</button>
+            <button class="tab-btn" data-tab="projects">Projects</button>
+            <button class="tab-btn highlight" data-tab="contact">Get in Touch</button>
+        </div>
+    </div>
+
+    <main>
+
+        <!-- PROFESSIONAL EXPERIENCE TAB -->
+        <div class="tab-panel active" id="tab-experience">
+
+            <section class="section">
+                <h2 class="section-title">Work History</h2>
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-top">
+                            <span class="card-title">Staff Software Engineer</span>
+                            <span class="card-meta">2024 — Present</span>
+                        </div>
+                        <p class="card-company">Glyphic Bio - <i>De novo protein sequencing using nanopores</i></p>
+                        <p class="card-desc">Built the instrument control software for the prototype sequencer, then pivoted to Glyphic's real time sequencing platform. Managed the project that lifted the entire bioinformatics pipeline into Nextflow, reducing unit compute costs by more than 5x. Primary owner of the company's cloud infrastructure. Built a handful of custom tools for ingesting and analyzing lab data from scratch.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-top">
+                            <span class="card-title">Staff Software Engineer [<i>contract</i>]</span>
+                            <span class="card-meta">2024</span>
+                        </div>
+                        <p class="card-company">Ruby Robotics - <i>Automated tissue biopsy platform</i></p>
+                        <p class="card-company-status">Acquired by Intuitive Surgical in 2025</p>
+                        <p class="card-desc">Over a few months, built a C# app that enabled cytopathologist end-users to navigate thousands of high-resolution tissue scan images. Helped refactor instrument control code that performed the tissue scans, speeding them up significantly.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-top">
+                            <span class="card-title">Senior Software Engineer</span>
+                            <span class="card-meta">2022 — 2024</span>
+                        </div>
+                        <p class="card-company">Deepcell - <i>Pioneering the morpholome</i></p>
+                        <p class="card-desc">Built the instrument code (C#) for the next-generation prototype instrument, a platform for high throughput single-cell sorting and deposition.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-top">
+                            <span class="card-title">Senior Software Engineer</span>
+                            <span class="card-meta">2019 — 2022</span>
+                        </div>
+                        <p class="card-company">GenapSys - <i>Next-gen sequencing platform</i></p>
+                        <p class="card-desc">Refactored the entire primary analysis pipeline, plugging C modules into Python to achieve massive speedups and more efficient resource use. Became primary owner of the pipeline code delivered to customers with the seqeuencer.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- GRADUATE RESEARCH TAB -->
+        <div class="tab-panel" id="tab-research">
+
+            <div class="scroll-story">
+
+                <!-- Sticky graphic panel -->
+                <div class="story-sticky">
+                    <div class="story-graphic-wrap">
+                        <img id="story-img" src="ice water.png" alt="" class="story-img" />
+                        <div id="story-caption" class="story-caption">Ice Water</div>
+                    </div>
+                </div>
+
+                <!-- Scrolling text sections -->
+                <div class="story-steps">
+
+                    <div class="story-step active" data-img="ice water.png" data-caption="Ice Water">
+                        <p class="research-label">Preamble</p>
+                        <h2 class="research-heading">Phase Transitions</h2>
+                        <p class="research-body">We're all familiar with the idea of a phase transition—the ice melting in your glass of water, for example. In a simple sense, a phase transition describes a point where a system abruptly changes between two distinct states. Allowing time for things to equilibrate, the ice will turn to water ever so slightly above 0°C, and back to ice every so slightly below it. In this case, 0°C is what's called the <i>critical point</i>.</p>
+                    </div>
+
+                    <div class="story-step" data-img="Bridges_of_Konigsberg.png" data-caption="The Seven Bridges of Königsberg">
+                        <p class="research-label">Intro</p>
+                        <h2 class="research-heading">Graph Theory</h2>
+                        <p class="research-body">A "graph" in this context is math parlance for a network. Graph theory is something of a young field, tracing its origin back to a paper by Leonhard Euler about the <a href=https://en.wikipedia.org/wiki/Seven_Bridges_of_Königsberg>Seven Bridges of Königsberg</a>. In its simplest form, a graph contains only two elements: <i>vertices</i> and <i>edges</i>. Any vertex can be connected to any other through an edge.</p>
+                    </div>
+
+                    <div class="story-step" data-img="erdos-renyi.png" data-caption="Percolating Graph">
+                        <p class="research-label">Background</p>
+                        <h2 class="research-heading">Percolation</h2>
+                        <p class="research-body">Let's start with an "empty" graph of vertices with no edges, then one at a time we'll add an edge. If we choose which two vertices to connect uniformly at random, we'll have what's called an <a href=https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model>Erdős–Rényi random graph</a>. Add enough edges and eventually every vertex in the graph becomes connected into a single cluster. The process of adding links until reaching the point of full connectivity is called <a href=https://en.wikipedia.org/wiki/Percolation_theory><i>percolation</i></a>.</p>
+                    </div>
+
+                    <div class="story-step" data-img="er-transition.png" data-caption="Erdős–Rényi Phase Transition">
+                        <p class="research-label">Background Con't</p>
+                        <h2 class="research-heading">Percolation & Phase Transitions</h2>
+                        <p class="research-body">One way to describe a phaste transition is by its <i>order parameter</i>, a quantity that changes abruptly at the transition's critical point. With that in mind, let's look at what happens when we track the size of the largest connected cluster as we add edges to an empty graph. As the size of the graph approaches infinity, it will naturally start near zero, but add edges until there are right around half as many as there are vertices (averaged over many realizations) and all of a sudden the largest cluster starts growing from nearly zero to encompass the entire graph. Just what we'd expect from a phase transition.</p>
+                    </div>
+
+                    <div class="story-step" data-img="product_rule.png" data-caption="Achlioptas Selection Rule">
+                        <p class="research-label">Motivation</p>
+                        <h2 class="research-heading">Guided Percolation</h2>
+                        <p class="research-body">Erdős–Rényi growth is an example of a <i>continuous</i> phase transition, where the order parameter remains smooth at the critical point. In 2009, a <a href=https://www.science.org/doi/10.1126/science.1167782>paper by Achlioptas et. al.</a> contended that by considering a selection criteria during the addition of each edge, it was possible to achieve a <i>discontinuous</i> transition. Though this contention <a href="https://arxiv.org/abs/1102.5306">turned out to be incorrect</a>, the process of guiding percolation through a selection criteria can still change both the location of the critical point, and the overall "speed" of the transition.</p>
+                    </div>
+
+                    <div class="story-step" data-img="er-pr-dpr.png" data-caption="Phase Transitions Compared">
+                        <p class="research-label">Our Research</p>
+                        <h2 class="research-heading">Localized Selection Rules, Tunable Criticality</h2>
+                        <p class="research-body">The selection criteria considered by Achlioptas et. al. requires knowing the state of the entire graph at all times to enact. We developed a criteria that requires only knowledge of the local state for each vertex under consideration. We demonstrated that this type of selection criteria retains the slower "speed" of an Erdős–Rényi transition, while admitting tunability of the critical point—essentially, a delay in the onset of the phase transition—similar to the Achlioptas process.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Publications below the scrollytelling section -->
+            <div class="research-pubs">
+                <h2 class="section-title">Publication</h2>
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-top">
+                            <span class="card-title">
+                                Degree product rule tempers explosive percolation in the absence of global information
+                            </span>
+                            <span class="card-meta">Physical Review E (Rapid Communication) · 2018</span>
+                        </div>
+                        <p class="card-desc">We introduce a guided network growth model, which we call the degree product rule process, that uses solely local information when adding new edges.</p>
+                        <a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.97.020301" class="card-link">🗎 Read paper (APS) |</a>
+                        <a href="https://arxiv.org/abs/1711.08099" class="card-link"> 🗎 Read paper (Arxiv)</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- PROJECTS TAB -->
+        <div class="tab-panel" id="tab-projects">
+
+            <section class="section">
+                <h2 class="section-title">Projects</h2>
+
+                <div class="project-card">
+                    <h3>Degree Product Rule — MATLAB to Rust Rewrite</h3>
+                    <p class="project-subtitle">Percolation Simulator &middot; Rust, Rayon, Union-Find</p>
+
+                    <p>During my PhD, I developed a code in MATLAB for studying a new of method of guided percolation on random graphs, which we called the Degree Product Rule (DPR) process. Because these types of guided growth processes are highly path-dependent, studying them requires doing finite-size scaling in order to infer behavior at the thermodynamic limit, which in turn entails running many growth simulations up to as large a network size as possible.</p>
+
+                    <p>At the time, we used MATLAB plugins to accelerate the code, but anyone familiar with MATLAB will know that these were still far from optimal implementations. I recall submitting jobs to the compute cluster we were fortunate enough to have on campus, often waiting a full day to get results back from the upper end of our network size window.</p>
+
+                    <p>Thankfully, we squeezed enough performance out of MATLAB to get the results we needed, but with the advent of AI coding tools it seemed like a great time to revisit the code and get a sense of what an optimized buildout looks like. I decided to have Claude take a look at translating it into Rust, with the following optimizations among the improvements:</p>
+
+                    <table class="compare-table">
+                        <thead>
+                            <tr>
+                                <th>Aspect</th>
+                                <th>MATLAB</th>
+                                <th>Rust</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cluster tracking</td>
+                                <td>O(N) linear scan</td>
+                                <td>O(α(N)) path-halving Union-Find</td>
+                            </tr>
+                            <tr>
+                                <td>Edge deduplication</td>
+                                <td>Cell array of sparse vectors</td>
+                                <td>FxHashSet&lt;u64&gt;</td>
+                            </tr>
+                            <tr>
+                                <td>Parallelism</td>
+                                <td>parfor (Toolbox required)</td>
+                                <td>Rayon work-stealing, no licence needed</td>
+                            </tr>
+                            <tr>
+                                <td>RNG</td>
+                                <td>Shared state</td>
+                                <td>Xoshiro256++ per thread</td>
+                            </tr>
+                            <tr>
+                                <td>k=2 fast path</td>
+                                <td>General loop</td>
+                                <td>Inline, zero heap allocation per step</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>The Rust implementation includes CLI subcommands for scaling sweeps, averaged order-parameter curves, single-realization growth, and the global-choice analytical limit. Parallelism scales automatically across all available cores, with memory-aware thread capping for large N runs on AWS.</p>
+
+                    <p>The upper limit of our network size in graduate school (10<sup>7</sup> edges), which used to take hours per simulation run on a compute cluster instance, can now run on my laptop in less than a second! The compute and memory requirements scale like a power law with network size, but even still I'm now able to push up to the next order of magnitude in system size (about 1 minute per simulation). Good news—the scaling still holds!</p>
+
+                    <figure style="margin: 2rem 0 1.5rem; text-align: center;">
+                        <img src="dpr-scaling.png" alt="Finite size scaling plot for the Degree Product Rule" style="max-width: 100%; border-radius: 6px; border: 1px solid var(--border);" />
+                        <figcaption style="margin-top: 0.6rem; font-size: 0.85rem; color: var(--muted); line-height: 1.5;">Finite size scaling around the critical point (orange circles) for the size of the largest cluster. Compare to Figure 4B in the paper.</figcaption>
+                    </figure>
+
+                    <div class="project-links">
+                        <a href="https://github.com/atrevely/DegreeProductRule" target="_blank" class="project-link">GitHub Repository</a>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+
+        <!-- GET IN TOUCH TAB -->
+        <div class="tab-panel" id="tab-contact">
+            <div class="contact-panel">
+                <p>Feel free to reach out about research collaborations, professional opportunities, or anything else. I'm always happy to connect.</p>
+                <div class="contact-links">
+                    <a href="mailto:atrevely@gmail.com" class="contact-link-row">
+                        <span class="contact-link-label">Email</span>
+                        <span class="contact-link-value">atrevely@gmail.com</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ajtrev/" target="_blank" class="contact-link-row">
+                        <span class="contact-link-label">LinkedIn</span>
+                        <span class="contact-link-value">linkedin.com/in/ajtrev</span>
+                    </a>
+                    <a href="https://github.com/atrevely" target="_blank" class="contact-link-row">
+                        <span class="contact-link-label">GitHub</span>
+                        <span class="contact-link-value">github.com/atrevely</span>
+                    </a>
+                    <a href="/cv.pdf" class="contact-link-row">
+                        <span class="contact-link-label">CV / Résumé</span>
+                        <span class="contact-link-value">Download PDF →</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <span>Alexander J. Trevelyan, PhD</span>
+        <span>ajtrev.com</span>
+    </footer>
+
+    <script>
+        const buttons = document.querySelectorAll('.tab-btn[data-tab]');
+        const panels = document.querySelectorAll('.tab-panel');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.tab;
+
+                // Update buttons
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Update panels
+                panels.forEach(p => p.classList.remove('active'));
+                document.getElementById('tab-' + target).classList.add('active');
+            });
+        });
+        // Scrollytelling: update sticky graphic as steps scroll into view
+        const steps = document.querySelectorAll('.story-step');
+        const storyImg = document.getElementById('story-img');
+        const storyCaption = document.getElementById('story-caption');
+
+        const stepObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Deactivate all, activate this one
+                    steps.forEach(s => s.classList.remove('active'));
+                    entry.target.classList.add('active');
+
+                    const newSrc = entry.target.dataset.img;
+                    const newCaption = entry.target.dataset.caption;
+
+                    if (storyImg.src !== newSrc) {
+                        storyImg.classList.add('swapping');
+                        setTimeout(() => {
+                            storyImg.src = newSrc;
+                            storyImg.onload = () => storyImg.classList.remove('swapping');
+                            storyCaption.textContent = newCaption;
+                        }, 300);
+                    }
+                }
+            });
+        }, { threshold: 0.5, rootMargin: '-10% 0px -40% 0px' });
+
+        steps.forEach(step => stepObserver.observe(step));
+
+    </script>
+
+</body>
+</html>

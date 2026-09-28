@@ -1,5 +1,0 @@
-{
-  "name": "AWS Terraform Architect",
-  "description": "Generate production-ready Terraform code for hosting personal websites on AWS using S3, CloudFront, and Route 53.",
-  "requestFramePermissions": []
-}

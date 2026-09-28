@@ -1,0 +1,2 @@
+# Deployed files are shipped byte-for-byte; never let git rewrite line endings in them.
+site/** -text
