@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Page not found | Alexander J. Trevelyan, PhD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+    <!-- Served by CloudFront for any missing path, so every URL here must be absolute. -->
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f8f8f6;
+            --ink: #111111;
+            --muted: #666660;
+            --accent: #2a6ef5;
+            --border: #e0e0d8;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 5rem 2rem 3rem;
+        }
+
+        .code {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(4rem, 18vw, 7rem);
+            line-height: 1;
+            color: var(--accent);
+        }
+
+        h1 {
+            font-family: 'DM Serif Display', serif;
+            font-weight: 400;
+            font-size: 2rem;
+            margin: 1rem 0 0.75rem;
+            padding-top: 1.2rem;
+            border-top: 2px solid var(--ink);
+        }
+
+        p {
+            color: var(--muted);
+            max-width: 34rem;
+        }
+
+        .home {
+            display: inline-block;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            border-radius: 5px;
+            padding: 0.65rem 1.2rem;
+        }
+
+            .home:hover {
+                text-decoration: none;
+                background: rgba(42,110,245,0.04);
+            }
+
+        footer {
+            width: 100%;
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+            font-size: 0.82rem;
+            color: var(--muted);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                padding: 3rem 1.25rem 2rem;
+            }
+
+            footer {
+                padding: 2rem 1.25rem 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="code" aria-hidden="true">404</div>
+        <h1>Page not found</h1>
+        <p>There's nothing at this address. It may have moved, or the link may have a typo.</p>
+        <a class="home" href="/">Back to ajtrev.com</a>
+    </main>
+
+    <footer>
+        <span>Alexander J. Trevelyan, PhD</span>
+        <span>ajtrev.com</span>
+    </footer>
+</body>
+</html>
