@@ -17,10 +17,22 @@ Content repo for Alexander's site **ajtrev.com**. Infra lives in the sibling rep
 - Single page `site/index.html` (inline CSS/JS, Google Fonts), tabs: experience / research / projects / contact.
   Research tab swaps images via JS (`ice water.png`, `Bridges_of_Konigsberg.png`, `erdos-renyi.png`, etc.).
 - `site/dpr-scaling.png` is actually JPEG data (served as image/png; browsers cope).
-- Preview: `.claude/launch.json` config `site` serves `site/` on http://127.0.0.1:8000.
+- Preview: `.claude/launch.json` config `site` serves `site/` on http://127.0.0.1:8000 (no headers);
+  `site-csp` on :8001 adds the production security headers.
 - Check: `python scripts/check_site.py site`.
 
 - `site/404.html` is served by CloudFront for *any* missing path, so it must use absolute URLs only.
+- JS lives in `site/main.js` (tabs + research-image scroller); `index.html` has no inline scripts.
+
+## Content Security Policy (set by CloudFront, defined in ajtrev-infra `main.tf`)
+`default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+font-src https://fonts.gstatic.com; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none';
+object-src 'none'; upgrade-insecure-requests`. Consequences when editing:
+- No inline `<script>` blocks, `on*=` handlers, or `javascript:` URLs; put JS in `.js` files. Inline CSS is fine.
+- No `fetch`/XHR (no `connect-src`), no forms, no iframes/embeds, no `data:` images.
+- Any new third-party origin (analytics, CDN, embed) needs a CSP change in ajtrev-infra first.
+- Test with the `site-csp` preview (`scripts/serve_with_headers.py`, port 8001), which sends the production headers;
+  keep its `HEADERS` in sync with the Terraform policy.
 
 ## CloudFront behavior (configured in ajtrev-infra)
 - Missing objects: S3 via OAC returns 403; CloudFront maps 403 and 404 to `/404.html` with status 404
