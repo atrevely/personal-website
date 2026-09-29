@@ -29,11 +29,15 @@ const stepObserver = new IntersectionObserver((entries) => {
             const newSrc = entry.target.dataset.img;
             const newCaption = entry.target.dataset.caption;
 
-            if (storyImg.src !== newSrc) {
+            // Compare the attribute, not .src: .src is the absolute URL and never equals the relative data-img.
+            if (storyImg.getAttribute('src') !== newSrc) {
                 storyImg.classList.add('swapping');
                 setTimeout(() => {
+                    // Attach handlers before setting src so a cached image can't load first;
+                    // on error, un-fade anyway rather than leave the image hidden.
+                    storyImg.onload = storyImg.onerror = () => storyImg.classList.remove('swapping');
                     storyImg.src = newSrc;
-                    storyImg.onload = () => storyImg.classList.remove('swapping');
+                    storyImg.alt = newCaption;
                     storyCaption.textContent = newCaption;
                 }, 300);
             }
