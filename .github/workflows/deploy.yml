@@ -45,10 +45,27 @@ jobs:
           role-to-assume: arn:aws:iam::958373514345:role/ajtrev-site-deploy
           aws-region: ${{ env.AWS_REGION }}
 
-      # Only site/ is ever synced. --delete makes the bucket mirror the repo;
-      # the bucket is versioned, so removed objects remain recoverable.
-      - name: Sync site/ to S3
-        run: aws s3 sync site/ "s3://${BUCKET}" --delete --no-progress
+      # Only site/ is ever synced. Order matters so visitors never see a page
+      # that references a missing file: assets first, then HTML, then delete
+      # anything no longer in the repo (the bucket is versioned, so removed
+      # objects remain recoverable).
+      # Browser caching: HTML 5 min so edits show up quickly; everything else
+      # 1 day. To change an asset immediately for returning visitors, rename it.
+      - name: Upload assets
+        run: >
+          aws s3 sync site/ "s3://${BUCKET}" --no-progress
+          --exclude "*.html"
+          --cache-control "public, max-age=86400"
+
+      - name: Upload HTML
+        run: >
+          aws s3 sync site/ "s3://${BUCKET}" --no-progress
+          --exclude "*" --include "*.html"
+          --cache-control "public, max-age=300"
+
+      # --size-only: everything was just uploaded, so this pass only deletes.
+      - name: Remove files no longer in the repo
+        run: aws s3 sync site/ "s3://${BUCKET}" --no-progress --delete --size-only
 
       - name: Invalidate CloudFront
         run: |

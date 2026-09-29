@@ -16,7 +16,12 @@ Content repo for Alexander's site **ajtrev.com**. Infra lives in the sibling rep
 ## Site
 - Single page `site/index.html` (inline CSS/JS, Google Fonts), tabs: experience / research / projects / contact.
   Research tab swaps images via JS (`ice water.png`, `Bridges_of_Konigsberg.png`, `erdos-renyi.png`, etc.).
-- `site/dpr-scaling.png` is actually JPEG data (served as image/png; browsers cope).
+- Images are WebP (optimized 2026-09-29: page images went from 2.5 MB to 0.38 MB). For new images: export at about
+  2x the displayed CSS size, save WebP (photos quality 75-80, charts and line art about 90), no spaces in filenames,
+  and give every `<img>` `width`/`height` attributes; add `loading="lazy"` unless it's above the fold.
+  `dpr-scaling.jpg` stays JPEG (already small).
+- Caching (set by `deploy.yml`): HTML `max-age=300`, everything else `max-age=86400`. To force returning visitors to
+  get a changed image/JS/PDF right away, rename the file.
 - Preview: `.claude/launch.json` config `site` serves `site/` on http://127.0.0.1:8000 (no headers);
   `site-csp` on :8001 adds the production security headers.
 - Check: `python scripts/check_site.py site`.
