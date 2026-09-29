@@ -28,8 +28,10 @@ echo "Smoke test for $BASE"
 
 # 1. Home page renders the real site
 body=$(fetch "$BASE/") || body=""
-if printf '%s' "$body" | grep -q '<title>Alexander J. Trevelyan, PhD</title>'; then pass "home page title"; else fail "home page title missing"; fi
-if printf '%s' "$body" | grep -q 'src="main.js"'; then pass "home page loads main.js"; else fail "home page doesn't reference main.js"; fi
+# Match with [[ ]], not "printf | grep -q": grep -q exits on the first match, and if printf is still
+# writing, the SIGPIPE makes the pipeline fail under pipefail (an intermittent false alarm).
+if [[ $body == *'<title>Alexander J. Trevelyan, PhD</title>'* ]]; then pass "home page title"; else fail "home page title missing"; fi
+if [[ $body == *'src="main.js"'* ]]; then pass "home page loads main.js"; else fail "home page doesn't reference main.js"; fi
 
 # 2. Redirects
 check_status "http -> https" "http://$HOST/" 301 "$BASE/"
@@ -39,13 +41,14 @@ check_status "www -> apex" "https://www.$HOST/cv.pdf?x=1" 301 "$BASE/cv.pdf?x=1"
 check_status "cv.pdf" "$BASE/cv.pdf" 200
 check_status "main.js" "$BASE/main.js" 200
 check_status "missing page" "$BASE/smoke-test-missing-page" 404
-if fetch "$BASE/smoke-test-missing-page" | grep -q 'Page not found'; then pass "404 page content"; else fail "404 page content missing"; fi
+notfound=$(fetch "$BASE/smoke-test-missing-page") || notfound=""
+if [[ $notfound == *'Page not found'* ]]; then pass "404 page content"; else fail "404 page content missing"; fi
 
 # 4. Security headers on the home page
 headers=$(fetch -I "$BASE/" | tr -d '\r' | tr 'A-Z' 'a-z') || headers=""
 for h in "strict-transport-security: max-age=31536000" "content-security-policy: default-src 'none'" \
          "x-content-type-options: nosniff" "x-frame-options: deny" "referrer-policy:"; do
-    if printf '%s' "$headers" | grep -qF "$h"; then pass "header ${h%%:*}"; else fail "header missing: $h"; fi
+    if [[ $headers == *"$h"* ]]; then pass "header ${h%%:*}"; else fail "header missing: $h"; fi
 done
 
 # 5. TLS certificate not close to expiry
