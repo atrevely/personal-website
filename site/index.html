@@ -16,7 +16,7 @@
     <meta property="og:image" content="https://ajtrev.com/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Alexander J. Trevelyan, PhD. Software Engineer, Oakland, CA" />
+    <meta property="og:image:alt" content="Alexander J. Trevelyan, PhD. Staff Software Engineer, Oakland, CA" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -178,31 +178,6 @@
                 background: #1f5cd6;
                 border-color: #1f5cd6;
                 color: #fff;
-            }
-
-        /* ── BANNER (slim band) ── */
-        .banner {
-            position: relative;
-            height: 230px;
-            overflow: hidden;
-        }
-
-            .banner img {
-                display: block;
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: center 58%;
-            }
-
-            .banner::after {
-                content: '';
-                position: absolute;
-                inset: 0;
-                pointer-events: none;
-                background:
-                    linear-gradient(to bottom, var(--bg) 0%, transparent 28%, transparent 72%, var(--bg) 100%),
-                    linear-gradient(to right, var(--bg) 0%, transparent 10%, transparent 90%, var(--bg) 100%);
             }
 
         /* ── STICKY SECTION NAV ── */
@@ -699,10 +674,6 @@
                 font-size: 2rem;
             }
 
-            .banner {
-                height: 150px;
-            }
-
             .scroll-story {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
@@ -730,12 +701,119 @@
                 padding: 1.4rem;
             }
         }
+
+        /* ── HERO: full-scene photo with the header on a frosted panel ── */
+        .hero {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 50% 40%;
+        }
+
+        /* header.wrap.hero-inner out-ranks header.wrap and .wrap */
+        header.wrap.hero-inner {
+            position: relative;
+            max-width: 1280px;
+            min-height: 620px;
+            padding-top: 4.5rem;
+            padding-bottom: 4.5rem;
+        }
+
+        /* Wide enough that the name stays on one line and all four buttons fit in one row */
+        .hero-panel {
+            max-width: 740px;
+            gap: 1.8rem;
+            background: rgba(248, 248, 246, 0.88);
+            backdrop-filter: blur(10px) saturate(1.1);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(20, 30, 45, 0.18);
+            padding: 1.8rem;
+        }
+
+            .hero-panel h1 {
+                font-size: 2.3rem;
+                white-space: nowrap;
+            }
+
+            .hero-panel .header-photo {
+                width: 120px;
+                height: 152px;
+            }
+
+            .hero-panel .actions {
+                flex-wrap: nowrap;
+            }
+
+        .credit {
+            flex-basis: 100%;
+            order: 3;
+            font-size: 0.75rem;
+            color: var(--faint);
+        }
+
+            .credit a {
+                color: var(--faint);
+                text-decoration: underline;
+            }
+
+        /* Narrow screens (phones, small tablets, split windows): photo on top, panel as a card overlapping
+           its bottom edge, buttons in a 2x2 grid. 800px, not 640px: below ~800px the one-line name and
+           button row no longer fit beside the photo. */
+        @media (max-width: 800px) {
+            .hero-img {
+                position: static;
+                height: 220px;
+            }
+
+            header.wrap.hero-inner {
+                min-height: 0;
+                padding-top: 0;
+                padding-bottom: 1.5rem;
+                margin-top: -64px;
+            }
+
+            .hero-panel {
+                max-width: none;
+                padding: 1.3rem;
+                flex-direction: column;
+                gap: 1.2rem;
+            }
+
+                .hero-panel h1 {
+                    font-size: 1.9rem;
+                    white-space: normal;
+                }
+
+                .hero-panel .header-photo {
+                    width: 96px;
+                    height: 120px;
+                }
+
+                .hero-panel .actions {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                }
+
+                    .hero-panel .actions .btn {
+                        justify-content: center;
+                    }
+        }
     </style>
 </head>
 <body>
 
-    <header class="wrap">
-        <div class="header-inner">
+    <div class="hero">
+        <img class="hero-img" src="coast.webp" srcset="coast-1200.webp 1200w, coast.webp 2000w" sizes="100vw" width="2000" height="1333" alt="" fetchpriority="high" />
+        <header class="wrap hero-inner">
+            <div class="header-inner hero-panel">
             <img class="header-photo" src="me_alaska.webp" alt="Alexander J. Trevelyan" width="340" height="458" />
             <div class="header-text">
                 <h1>Alexander J. Trevelyan, PhD</h1>
@@ -764,11 +842,8 @@
                     </a>
                 </div>
             </div>
-        </div>
-    </header>
-
-    <div class="banner" aria-hidden="true">
-        <img src="banner.webp" width="1600" height="914" alt="" />
+            </div>
+        </header>
     </div>
 
     <nav class="section-nav" aria-label="Sections">
@@ -1001,6 +1076,7 @@
     <footer>
         <div class="wrap">
             <span>© 2026 Alexander J. Trevelyan</span>
+            <p class="credit">Coastline photo: <a href="https://commons.wikimedia.org/wiki/File:Oregon_coastline_near_Cannon_Beach.jpg" target="_blank" rel="noopener">“Oregon coastline near Cannon Beach”</a> by Abhinaba Basu, <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener">CC BY 2.0</a>, cropped and resized.</p>
             <nav aria-label="Elsewhere">
                 <a href="mailto:atrevely@gmail.com">Email</a>
                 <a href="https://www.linkedin.com/in/ajtrev/" target="_blank" rel="noopener">LinkedIn</a>
