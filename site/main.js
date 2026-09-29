@@ -1,19 +1,15 @@
-const buttons = document.querySelectorAll('.tab-btn[data-tab]');
-const panels = document.querySelectorAll('.tab-panel');
+// Section nav: highlight the link for the section currently in view.
+const navLinks = document.querySelectorAll('.section-nav a[href^="#"]');
+const sections = [...navLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
 
-buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const target = btn.dataset.tab;
+const setActive = id => navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
 
-        // Update buttons
-        buttons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) setActive(entry.target.id); });
+}, { rootMargin: '-45% 0px -50% 0px' });   // a thin band just above mid-screen decides the active section
 
-        // Update panels
-        panels.forEach(p => p.classList.remove('active'));
-        document.getElementById('tab-' + target).classList.add('active');
-    });
-});
+sections.forEach(s => sectionObserver.observe(s));
+
 // Scrollytelling: update sticky graphic as steps scroll into view
 const steps = document.querySelectorAll('.story-step');
 const storyImg = document.getElementById('story-img');
