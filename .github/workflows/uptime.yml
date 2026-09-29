@@ -1,0 +1,21 @@
+name: uptime
+
+# Hourly smoke test of the live site. A failed run emails the repo owner through
+# GitHub's Actions notifications. Public repo, so Actions minutes are free.
+# Note: GitHub disables schedules in public repos after 60 days without activity;
+# if that happens, re-enable the workflow from the Actions tab.
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - run: bash scripts/smoke_test.sh
