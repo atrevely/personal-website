@@ -1,4 +1,4 @@
-"""Pre-deploy checks for site/: forbidden files and broken local references.
+"""Pre-deploy checks for site/: forbidden files, broken local references, and unfilled data-todo placeholders.
 
 Usage: python scripts/check_site.py [site_dir]
 Exits non-zero on any problem.
@@ -27,6 +27,8 @@ def main() -> int:
 
     for page in root.rglob("*.html"):
         text = page.read_text(encoding="utf-8")
+        if "data-todo" in text:
+            errors.append(f"{page}: unfinished placeholder (data-todo) must be filled in before deploying")
         for ref in REF.findall(text):
             parsed = urlparse(ref)
             if parsed.scheme or ref.startswith(("#", "//", "mailto:", "tel:", "javascript:")):
