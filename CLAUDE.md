@@ -25,6 +25,11 @@ Content repo for Alexander's site **ajtrev.com**. Infra lives in the sibling rep
 - Preview: `.claude/launch.json` config `site` serves `site/` on http://127.0.0.1:8000 (no headers);
   `site-csp` on :8001 adds the production security headers.
 - Check: `python scripts/check_site.py site`.
+- Monitoring: `scripts/smoke_test.sh [base_url]` checks the live site (title, main.js, http->https and www->apex
+  301s, cv.pdf, 404 page, security headers, TLS cert >= 30 days left). It runs hourly (`.github/workflows/uptime.yml`,
+  minute 17; failures email the repo owner) and as the last step of every deploy. Update it when you change URLs,
+  headers or the page title. GitHub disables schedules in public repos after 60 days without activity; re-enable
+  from the Actions tab if the hourly runs stop.
 
 - `site/404.html` is served by CloudFront for *any* missing path, so it must use absolute URLs only.
 - JS lives in `site/main.js` (tabs + research-image scroller); `index.html` has no inline scripts.

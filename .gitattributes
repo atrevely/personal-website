@@ -1,2 +1,4 @@
 # Deployed files are shipped byte-for-byte; never let git rewrite line endings in them.
 site/** -text
+# Shell scripts run on Linux runners; keep LF so they also run from Git Bash on Windows.
+*.sh text eol=lf

@@ -74,3 +74,7 @@ jobs:
             --query Invalidation.Id --output text)
           echo "Invalidation $id"
           aws cloudfront wait invalidation-completed --distribution-id "$DISTRIBUTION_ID" --id "$id"
+
+      # Fails the deploy loudly if the live site is broken after this change.
+      - name: Smoke test live site
+        run: bash scripts/smoke_test.sh
