@@ -25,6 +25,10 @@ def main() -> int:
         if path.is_file() and FORBIDDEN.search(path.name):
             errors.append(f"forbidden file in deploy folder: {path}")
 
+    # /egf/ belongs to Every Great Fortune, released from its own repo; the deploy role can't write there.
+    if (root / "egf").exists():
+        errors.append(f"{root}/egf: that path is Every Great Fortune's (atrevely/every-great-fortune), not this site's")
+
     for page in root.rglob("*.html"):
         text = page.read_text(encoding="utf-8")
         if "data-todo" in text:

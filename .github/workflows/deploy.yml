@@ -64,8 +64,12 @@ jobs:
           --cache-control "public, max-age=300"
 
       # --size-only: everything was just uploaded, so this pass only deletes.
+      # egf/ is Every Great Fortune, released from its own repo (atrevely/every-great-fortune):
+      # never this repo's to delete (and this role is denied writes there).
       - name: Remove files no longer in the repo
-        run: aws s3 sync site/ "s3://${BUCKET}" --no-progress --delete --size-only
+        run: >
+          aws s3 sync site/ "s3://${BUCKET}" --no-progress --delete --size-only
+          --exclude "egf/*"
 
       - name: Invalidate CloudFront
         run: |
